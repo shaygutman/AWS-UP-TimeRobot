@@ -50,11 +50,6 @@ resource "aws_sns_topic_subscription" "sms" {
   endpoint  = each.value
 }
 
-resource "aws_sns_sms_preferences" "alerts" {
-  monthly_spend_limit = var.sms_monthly_spend_limit
-  default_sms_type    = "Transactional"
-}
-
 # -------------------------------------------------------------------
 # Monitor 1: HTTPS canary
 # -------------------------------------------------------------------
@@ -102,6 +97,10 @@ data "archive_file" "canary" {
   type        = "zip"
   source_file = "${path.module}/canary/heartbeat.js"
   output_path = "${path.module}/build/canary.zip"
+}
+
+resource "terraform_data" "canary_script" {
+  input = data.archive_file.canary.output_base64sha256
 }
 
 resource "aws_iam_role" "canary" {
@@ -179,12 +178,17 @@ resource "aws_synthetics_canary" "https" {
     timeout_in_seconds = 60
     memory_in_mb       = 960
     environment_variables = {
-      TARGET_URL = var.http_url
+      TARGET_URL  = var.http_url
+      SCRIPT_HASH = data.archive_file.canary.output_base64sha256
     }
   }
 
   success_retention_period = 7
   failure_retention_period = 31
+
+  lifecycle {
+    replace_triggered_by = [terraform_data.canary_script]
+  }
 
   depends_on = [
     aws_iam_role_policy.canary,
@@ -277,9 +281,8 @@ resource "aws_lambda_function" "tcp_check" {
   handler                        = "tcp_check.handler"
   filename                       = data.archive_file.tcp_check.output_path
   source_code_hash               = data.archive_file.tcp_check.output_base64sha256
-  timeout                        = 15
-  memory_size                    = 128
-  reserved_concurrent_executions = 1
+  timeout     = 15
+  memory_size = 128
 
   environment {
     variables = {

@@ -1,4 +1,4 @@
-const synthetics = require('@aws/synthetics-core');
+const { synthetics } = require('@aws/synthetics-core');
 
 const checkHttps = async function () {
   const targetUrl = process.env.TARGET_URL;

@@ -28,12 +28,6 @@ variable "alert_sms_numbers" {
   }
 }
 
-variable "sms_monthly_spend_limit" {
-  description = "Account-wide cap, in US dollars, for text messages sent through Amazon SNS."
-  type        = string
-  default     = "10"
-}
-
 variable "consecutive_failures" {
   description = "How many failed checks in a row are required before an alert is sent. Checks run every 5 minutes."
   type        = number
