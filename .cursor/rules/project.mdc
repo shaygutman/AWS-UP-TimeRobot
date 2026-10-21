@@ -1,28 +1,18 @@
 ---
-description: Scope and constraints for the two-component AWS uptime alerts
+description: Scope for the two AWS uptime checks
 alwaysApply: true
 ---
 
 # Uptime alerts
 
-Build UptimeRobot-style alerts for exactly two components. CloudWatch watches. SNS notifies by email or SMS. Use the simplest, cheapest, fully managed option. Do not add a server, dashboard, status page, or extra AWS service unless REQUESTS.md is updated first.
+Two checks only, as recorded in REQUESTS.md.
 
-## Before building
+- HTTPS: CloudWatch Synthetics canary for the registration portal, every 5 minutes.
+- TCP: Lambda on EventBridge for PRD.given.co.il port 7080, every 5 minutes. It records a metric. It does not send mail itself.
+- Both alarms notify one SNS email topic after the configured number of consecutive failures.
 
-Read REQUESTS.md. If any required field still says missing, ask for that field and stop. Do not invent names, addresses, recipients, regions, or thresholds.
+Do not add components, channels, a dashboard, or a status page unless REQUESTS.md changes.
 
-CloudWatch does not visit a URL. Do not treat an alarm as the uptime check. The measurement source is still an open choice in REQUESTS.md.
-
-## Secrets
-
-Do not commit access keys, `.env` files, phone numbers, or private addresses. Keep alert recipients in AWS unless the user explicitly asks to write them in REQUESTS.md.
-
-## Example
-
-The user says "start" while a component address is still missing:
-- Do not point a check at a guessed address.
-- Ask for the two addresses and who receives the alert.
-
-## Talking to the user
+Do not commit email addresses, phone numbers, access keys, or `terraform.tfvars`. Recipient lists belong only in that local file.
 
 The user is technical but not a developer. Reply in Hebrew, in plain language. Do not show code unless they ask.

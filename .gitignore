@@ -16,6 +16,8 @@ cdk.out/
 .terraform/
 *.tfstate
 *.tfstate.*
+*.tfvars
+build/
 
 *.log
 .DS_Store

@@ -1,0 +1,16 @@
+aws_region = "us-east-1"
+
+alert_emails = [
+  "person@example.com",
+]
+
+alert_sms_numbers = [
+  "+9725XXXXXXXX",
+]
+
+sms_monthly_spend_limit = "10"
+consecutive_failures    = 2
+notify_on_recovery      = true
+http_url                = "https://portal.givenimaging.com/RapidRegistration"
+tcp_host                = "PRD.given.co.il"
+tcp_port                = 7080
