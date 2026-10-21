@@ -29,7 +29,7 @@ variable "alert_sms_numbers" {
 }
 
 variable "consecutive_failures" {
-  description = "How many failed checks in a row are required before an alert is sent. Checks run every 5 minutes."
+  description = "How many failed checks in a row are required before an alert is sent. Checks run every 3 minutes."
   type        = number
   default     = 2
 
@@ -46,7 +46,7 @@ variable "notify_on_recovery" {
 }
 
 variable "http_url" {
-  description = "HTTPS address checked every 5 minutes."
+  description = "HTTPS address checked every 3 minutes."
   type        = string
   default     = "https://portal.givenimaging.com/RapidRegistration"
 

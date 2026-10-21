@@ -7,8 +7,8 @@ alwaysApply: true
 
 Two checks only, as recorded in REQUESTS.md.
 
-- HTTPS: CloudWatch Synthetics canary for the registration portal, every 5 minutes.
-- TCP: Lambda on EventBridge for PRD.given.co.il port 7080, every 5 minutes. It records a metric. It does not send mail itself.
+- HTTPS: CloudWatch Synthetics canary for the registration portal, every 3 minutes.
+- TCP: Lambda on EventBridge for PRD.given.co.il port 7080, every 3 minutes. It records a metric. It does not send mail itself.
 - Both alarms notify one SNS email topic after the configured number of consecutive failures.
 
 Do not add components, channels, a dashboard, or a status page unless REQUESTS.md changes.

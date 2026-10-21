@@ -21,7 +21,7 @@ locals {
   https_canary_name    = "portal-https"
   tcp_metric_namespace = "UptimeMonitoring"
   tcp_metric_name      = "TcpPortOpen"
-  check_period_seconds = 300
+  check_period_seconds = 180
 }
 
 data "aws_caller_identity" "current" {}
@@ -171,7 +171,7 @@ resource "aws_synthetics_canary" "https" {
   start_canary         = true
 
   schedule {
-    expression = "rate(5 minutes)"
+    expression = "rate(3 minutes)"
   }
 
   run_config {
@@ -302,8 +302,8 @@ resource "aws_lambda_function" "tcp_check" {
 
 resource "aws_cloudwatch_event_rule" "tcp_check" {
   name                = "uptime-tcp-check"
-  description         = "Run the TCP port check every 5 minutes."
-  schedule_expression = "rate(5 minutes)"
+  description         = "Run the TCP port check every 3 minutes."
+  schedule_expression = "rate(3 minutes)"
 }
 
 resource "aws_cloudwatch_event_target" "tcp_check" {
